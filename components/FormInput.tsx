@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 type Props = {
   id: string,
   label: string,
@@ -10,9 +12,10 @@ function wait(milliseconds: number) {
   while (new Date().getTime() - start < milliseconds) {}
 }
 export default function FormInput({id, label, errorMessage, onInput}: Props) {
-  // This component is a bit slow to render...
-  wait(25);
-
+  useEffect(() => {
+    console.log('rendered')
+    wait(25);
+  }, [])
   return (
     <div className="flex items-center">
       <label htmlFor={id} className="flex-1">{label}</label>

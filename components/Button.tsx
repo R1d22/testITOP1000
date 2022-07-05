@@ -1,5 +1,5 @@
-export default function Button() {
+export default function Button( {text, size, color, hoverColor, activeColor, onclick }) {
     return (
-      <button className="bg-blue-500 text-white">Click me</button>
+      <button onClick={onclick} className={`w-${size} bg-[#${color}] hover:bg-[#${hoverColor}] active:bg-[#${activeColor}]`}>{text}</button>
     );
 }
