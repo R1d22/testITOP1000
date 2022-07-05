@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 
 type Props = {
   id: string,
@@ -13,9 +13,10 @@ function wait(milliseconds: number) {
 }
 export default function FormInput({id, label, errorMessage, onInput}: Props) {
   useEffect(() => {
-    console.log('rendered')
-    wait(25);
-  }, [])
+    wait(25)
+  }, [onInput])
+
+  
   return (
     <div className="flex items-center">
       <label htmlFor={id} className="flex-1">{label}</label>

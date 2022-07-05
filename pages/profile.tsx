@@ -1,26 +1,43 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useReducer } from 'react';
+
 
 
 import Button from '../components/Button';
 import FormInput from '../components/FormInput';
 
 
+const initialState = {count: 0};
 function getErrorMessage(input: string) {
   if (input.length > 0 && input.length < 5) return 'Minimum input length of 5 characters';
   return null;
 }
 
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+      
+    default:
+      throw new Error();
+  }
+}
+
 export default function Profile() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [country, setCountry] = useState('');
   const [bio, setBio] = useState('');
   const [success, setSuccess] = useState('')
-  const [counter, setCounter] = useState(0);
-  const [buttonColor, setButtonColor] = useState('B64026');
-  const [hoverButtonColor, setHoverButtonColor] = useState('F22F04');
-  const [activeButtonColor, setActiveButtonColor] = useState('F57255');
+  const [btnColor, setBtnColor] = useState ({
+    buttonSettings: {
+      color: 'B64026',
+      hoverColor: 'F22F04',
+      activeColor: 'F57255'
+    }
+  })
+
 
   const inputObjects = [
     {
@@ -56,22 +73,31 @@ export default function Profile() {
     },
   ]
 
-  const successSubmit = (name) => {
+  const successSubmit = (name: string) => {
     setSuccess(`Thank you, ${name}!`)
   }
+  
 
   const clickedButton = () => {
-    setCounter(counter + 1)
-    console.log(counter)
-    if (counter % 2 === 0 ) {
-      setButtonColor('294984')
-      setHoverButtonColor('1F4285')
-      setActiveButtonColor('1E3052')
+    dispatch({type: 'increment'})
+    console.log(state.count)
+    if (state.count % 2 === 0 ) {
+      setBtnColor({
+        buttonSettings: {
+          color: '294984',
+          hoverColor: '1F4285',
+          activeColor: '1E3052'
+        }
+      })
       return console.log('blue button')
     } else {
-      setButtonColor('B64026')
-      setHoverButtonColor('F22F04')
-      setActiveButtonColor('F57255')
+      setBtnColor({
+        buttonSettings: {
+          color: 'B64026',
+          hoverColor: 'F22F04',
+          activeColor: 'F57255'
+        }
+      })
       return console.log('red button')
     }
   }
@@ -89,9 +115,9 @@ export default function Profile() {
       {inputObjects.map(({id, label, onInput, errorMessage}, key) => <FormInput id={id} label={label} onInput={onInput} errorMessage={errorMessage} key={key} />)}
         <Button 
           text="Save"
-          color={buttonColor}
-          hoverColor={hoverButtonColor}
-          activeColor={activeButtonColor}
+          color={btnColor.buttonSettings.color}
+          hoverColor={btnColor.buttonSettings.hoverColor}
+          activeColor={btnColor.buttonSettings.activeColor}
           size="full"
           onclick={clickedButton}
         />
